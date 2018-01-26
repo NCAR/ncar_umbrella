@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  theme:
+    - koru
+id: relatedlinksblock
+theme: koru
+region: sidebar
+weight: 1
+provider: null
+plugin: related_links_block
+settings:
+  id: related_links_block
+  label: 'Related Links block'
+  provider: koru_blocks
+  label_display: '0'
+  context_mapping:
+    node: '@node.node_route_context:node'
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      page: page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      page: page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

@@ -1,0 +1,79 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_page_related_links
+    - node.type.page
+    - paragraphs.paragraphs_type.external_link
+    - paragraphs.paragraphs_type.file_download
+    - paragraphs.paragraphs_type.internal_link
+  module:
+    - entity_reference_revisions
+_core:
+  default_config_hash: d5F5579i8I_qOqbrzxSaF_IG_klg5PRR4G-yVH3tcC0
+id: node.page.field_page_related_links
+field_name: field_page_related_links
+entity_type: node
+bundle: page
+label: 'Related Links'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      external_link: external_link
+      file_download: file_download
+      internal_link: internal_link
+    target_bundles_drag_drop:
+      big_picture_box:
+        weight: 16
+        enabled: false
+      external_link:
+        enabled: true
+        weight: 17
+      file_download:
+        enabled: true
+        weight: 18
+      icon_box:
+        weight: 19
+        enabled: false
+      icon_box_item:
+        weight: 20
+        enabled: false
+      icon_box_with_caption:
+        weight: 21
+        enabled: false
+      icon_box_with_caption_item:
+        weight: 22
+        enabled: false
+      tadl_item:
+        weight: 23
+        enabled: false
+      tadl_list:
+        weight: 24
+        enabled: false
+      tadp_item:
+        weight: 25
+        enabled: false
+      tadp_list:
+        weight: 26
+        enabled: false
+      text_box:
+        weight: 27
+        enabled: false
+      text_only_item:
+        weight: 28
+        enabled: false
+      text_only_list:
+        weight: 29
+        enabled: false
+      video:
+        weight: 30
+        enabled: false
+      internal_link:
+        enabled: true
+field_type: entity_reference_revisions

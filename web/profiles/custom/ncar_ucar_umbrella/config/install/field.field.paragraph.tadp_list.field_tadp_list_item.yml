@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_tadp_list_item
+    - paragraphs.paragraphs_type.tadp_item
+    - paragraphs.paragraphs_type.tadp_list
+  module:
+    - entity_reference_revisions
+id: paragraph.tadp_list.field_tadp_list_item
+field_name: field_tadp_list_item
+entity_type: paragraph
+bundle: tadp_list
+label: 'List Item'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      tadp_item: tadp_item
+    target_bundles_drag_drop:
+      tadp_item:
+        enabled: true
+        weight: 3
+      tadp_list:
+        weight: 4
+        enabled: false
+field_type: entity_reference_revisions

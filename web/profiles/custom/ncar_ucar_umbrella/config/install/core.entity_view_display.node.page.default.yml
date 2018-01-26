@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.page.field_page_banner_image
+    - field.field.node.page.field_page_body
+    - field.field.node.page.field_page_components
+    - field.field.node.page.field_page_related_links
+    - field.field.node.page.field_page_subtitle
+    - node.type.page
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: O6gdSjAyTySFmqsI2jLo7-z1PPYlUa7iCWtX38uGshw
+id: node.page.default
+targetEntityType: node
+bundle: page
+mode: default
+content:
+  field_page_body:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+hidden:
+  field_page_banner_image: true
+  field_page_components: true
+  field_page_related_links: true
+  field_page_subtitle: true
+  links: true

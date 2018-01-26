@@ -1,0 +1,15 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_default
+third_party_settings:
+  menu_default:
+    menu_default: true
+name: Page
+type: page
+description: 'Use <em>pages</em> for your content, such as an ''Who We Are'' or ''Our Organization'' page.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

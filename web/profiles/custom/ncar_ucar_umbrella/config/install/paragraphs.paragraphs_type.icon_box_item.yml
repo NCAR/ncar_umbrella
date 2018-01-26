@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: icon_box_item
+label: 'Icon Box Item'
+behavior_plugins: {  }

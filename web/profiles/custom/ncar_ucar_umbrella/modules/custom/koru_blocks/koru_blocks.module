@@ -1,0 +1,24 @@
+<?php
+
+function koru_blocks_theme($existing, $type, $theme, $path) {
+  return array(
+    'header_block' => array(
+      'variables' => array('main_menu_items' => NULL, 'site_name' => NULL, 'site_slogan' => NULL, 'alert_exists' => NULL),
+    ),
+    'banner_block' => array(
+      'variables' => array('title' => NULL, 'subtitle' => NULL, 'banner_image' => NULL),
+    ),
+    'sidebar_block' => array(
+      'variables' => array('parent' => NULL, 'current_page' => NULL),
+    ),
+    'components_block' => array(
+      'variables' => array('components' => NULL),
+    ),
+    'related_links_block' => array(
+      'variables' => array('related_links' => NULL),
+    ),
+    'footer_block' => array(
+      'variables' => array(),
+    ),
+  );
+}

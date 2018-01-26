@@ -1,0 +1,71 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_page_components
+    - node.type.page
+    - paragraphs.paragraphs_type.big_picture_box
+    - paragraphs.paragraphs_type.details_table
+    - paragraphs.paragraphs_type.icon_box
+    - paragraphs.paragraphs_type.icon_box_with_caption
+    - paragraphs.paragraphs_type.tadl_list
+    - paragraphs.paragraphs_type.tadp_list
+    - paragraphs.paragraphs_type.text_box
+    - paragraphs.paragraphs_type.text_only_list
+    - paragraphs.paragraphs_type.video
+  module:
+    - entity_reference_revisions
+_core:
+  default_config_hash: TGSMC7FJ4YufKDpZWw24nH_1gmWi3p1tm1lRbZyUuvg
+id: node.page.field_page_components
+field_name: field_page_components
+entity_type: node
+bundle: page
+label: Components
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      big_picture_box: big_picture_box
+      icon_box: icon_box
+      icon_box_with_caption: icon_box_with_caption
+      text_box: text_box
+      text_only_list: text_only_list
+      tadl_list: tadl_list
+      tadp_list: tadp_list
+      video: video
+      details_table: details_table
+    target_bundles_drag_drop:
+      big_picture_box:
+        enabled: true
+        weight: 0
+      icon_box:
+        enabled: true
+        weight: 2
+      icon_box_with_caption:
+        enabled: true
+        weight: 3
+      text_box:
+        enabled: true
+        weight: 4
+      text_only_list:
+        enabled: true
+        weight: 5
+      tadl_list:
+        enabled: true
+        weight: 6
+      tadp_list:
+        enabled: true
+        weight: 7
+      video:
+        enabled: true
+        weight: 8
+      details_table:
+        enabled: true
+        weight: 1
+field_type: entity_reference_revisions

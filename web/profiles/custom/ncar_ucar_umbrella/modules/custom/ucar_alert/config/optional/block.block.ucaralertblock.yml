@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  theme:
+    - koru
+id: ucaralertblock
+theme: koru
+region: header
+weight: -1
+provider: null
+plugin: ucar_alert_block
+settings:
+  id: ucar_alert_block
+  label: 'UCAR Alert block'
+  provider: ucar_alert
+  label_display: '0'
+visibility: {  }

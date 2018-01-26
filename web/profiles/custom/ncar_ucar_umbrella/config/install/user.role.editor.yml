@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+id: editor
+label: Editor
+weight: 3
+is_admin: false
+permissions:
+  - 'access administration pages'
+  - 'access content overview'
+  - 'access files overview'
+  - 'access news feeds'
+  - 'access site in maintenance mode'
+  - 'access toolbar'
+  - 'access tour'
+  - 'administer nodes'
+  - 'create url aliases'
+  - 'use text format details_table'
+  - 'use text format wysiwyg_editor'
+  - 'view the administration theme'

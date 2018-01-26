@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.icon_box_with_caption.field_icon_box_caption_item
+    - field.field.paragraph.icon_box_with_caption.field_icon_box_caption_title
+    - paragraphs.paragraphs_type.icon_box_with_caption
+  module:
+    - paragraphs
+id: paragraph.icon_box_with_caption.default
+targetEntityType: paragraph
+bundle: icon_box_with_caption
+mode: default
+content:
+  field_icon_box_caption_item:
+    type: entity_reference_paragraphs
+    weight: 1
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_icon_box_caption_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+hidden:
+  created: true
+  status: true
+  uid: true

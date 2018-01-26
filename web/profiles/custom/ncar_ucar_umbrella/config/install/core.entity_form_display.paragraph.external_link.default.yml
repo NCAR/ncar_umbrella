@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.external_link.field_external_link_link
+    - paragraphs.paragraphs_type.external_link
+  module:
+    - link
+id: paragraph.external_link.default
+targetEntityType: paragraph
+bundle: external_link
+mode: default
+content:
+  field_external_link_link:
+    type: link_default
+    weight: 0
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
+  uid: true

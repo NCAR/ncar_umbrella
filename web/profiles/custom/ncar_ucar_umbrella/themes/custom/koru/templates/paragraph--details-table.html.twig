@@ -1,0 +1,13 @@
+{% set width = ['row', details_table_width] %}
+
+<div class="panel members-details-list">
+  <div {{ attributes.addClass(width, 'panel-title') }}>
+    <div class="column">
+      <h2>{{ content.field_details_table_title[0] }}</h2>
+      <p>{{ content.field_details_table_description[0] }}</p>
+    </div>
+  </div>
+  <div {{ attributes.addClass(width, 'members-list', 'small-up-1', 'large-up-2').removeClass('panel-title') }} data-equalizer data-equalize-by-row="true">
+    {{ content.field_details_table_item }}
+  </div>
+</div>

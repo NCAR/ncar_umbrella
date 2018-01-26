@@ -1,0 +1,15 @@
+koru-base:
+  css:
+    theme:
+      //fonts.googleapis.com/css?family=Work+Sans: { type: external, minified: true }
+      libraries/koru-base/css/vendor.min.css: { minified: true }
+      libraries/koru-base/css/main.min.css: { minified: true }
+      css/koru.css: {}
+  js:
+    libraries/koru-base/lib/jquery/dist/jquery.js: { weight: -100 }
+    libraries/koru-base/lib/foundation-sites/dist/js/foundation.min.js: { minified: true, weight: -90 }
+    libraries/koru-base/js/main.min.js: { minified: true, weight: -80 }
+    js/koru.js: { weight: -70 }
+js-cookie:
+  js:
+    libraries/js-cookie/js.cookie.js: { weight: -75 }

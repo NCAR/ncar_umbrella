@@ -1,0 +1,16 @@
+name: Koru
+description: "Umbrella NCAR|UCAR Modern Theme Based on Vermilion Design"
+type: theme
+core: 8.x
+base theme: classy
+regions:
+  header: Header
+  banner: 'Banner'
+  content: Content
+  sidebar: 'Sidebar'
+  content_footer: 'Content Footer'
+  footer: 'Footer'
+libraries:
+  - koru/koru-base
+  - koru/global-styling
+  - koru/js-cookie

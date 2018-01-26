@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_file_download_file
+    - paragraphs.paragraphs_type.file_download
+  module:
+    - file
+id: paragraph.file_download.field_file_download_file
+field_name: field_file_download_file
+entity_type: paragraph
+bundle: file_download
+label: 'File Download'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: 'documents/related-links/[date:custom:Y]-[date:custom:m]'
+  file_extensions: pdf
+  max_filesize: ''
+  description_field: true
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

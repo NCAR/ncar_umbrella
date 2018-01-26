@@ -1,0 +1,5 @@
+ucar_alert.admin:
+  title: 'Alert API'
+  description: 'The URL endpoint of the API.'
+  parent: system.admin_config_services
+  route_name: ucar_alert.settings

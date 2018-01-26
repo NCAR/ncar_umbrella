@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_tadl_list_item
+    - paragraphs.paragraphs_type.tadl_item
+    - paragraphs.paragraphs_type.tadl_list
+  module:
+    - entity_reference_revisions
+id: paragraph.tadl_list.field_tadl_list_item
+field_name: field_tadl_list_item
+entity_type: paragraph
+bundle: tadl_list
+label: 'List Item'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      tadl_item: tadl_item
+    target_bundles_drag_drop:
+      tadl_item:
+        enabled: true
+        weight: 3
+      tadl_list:
+        weight: 4
+        enabled: false
+field_type: entity_reference_revisions

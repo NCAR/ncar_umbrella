@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_text_only_item_link
+    - paragraphs.paragraphs_type.text_only_item
+  module:
+    - link
+id: paragraph.text_only_item.field_text_only_item_link
+field_name: field_text_only_item_link
+entity_type: paragraph
+bundle: text_only_item
+label: 'Item Link'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 2
+field_type: link

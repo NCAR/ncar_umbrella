@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_big_picture_box_descript
+    - paragraphs.paragraphs_type.big_picture_box
+id: paragraph.big_picture_box.field_big_picture_box_descript
+field_name: field_big_picture_box_descript
+entity_type: paragraph
+bundle: big_picture_box
+label: Description
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

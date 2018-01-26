@@ -1,0 +1,17 @@
+{%
+  set image_classes = [
+    'banner',
+    banner_image ? 'with-image',
+]
+%}
+
+{% set background_image = 'background: linear-gradient(0deg,rgba(38,37,38,0.2),rgba(38,37,38,0.2)),url(' ~ banner_image ~ ') no-repeat center center;background-size: cover;' %}
+
+<div {{ content_attributes.addClass(image_classes) }} {{ content_attributes.hasClass('with-image') ? content_attributes.setAttribute('style', background_image) }} data-banner-image="true">
+  <div class="details table container narrow">
+    <div class="cell panel center content">
+      <h1>{{ title }}</h1>
+      <p>{{ subtitle }}</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  theme:
+    - koru
+id: headerblock
+theme: koru
+region: header
+weight: 0
+provider: null
+plugin: header_block
+settings:
+  id: header_block
+  label: 'Header block'
+  provider: koru_blocks
+  label_display: '0'
+visibility: {  }

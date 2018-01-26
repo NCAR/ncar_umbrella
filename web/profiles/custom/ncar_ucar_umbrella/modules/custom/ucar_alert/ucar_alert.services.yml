@@ -1,0 +1,3 @@
+services:
+  ucar_alert_api.manager:
+    class: Drupal\ucar_alert\UcarAlertApiService

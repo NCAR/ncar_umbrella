@@ -1,0 +1,9 @@
+<?php
+
+function ucar_alert_theme($existing, $type, $theme, $path) {
+  return [
+    'ucar_alert_block' => [
+      'variables' => ['alert' => NULL],
+    ],
+  ];
+}

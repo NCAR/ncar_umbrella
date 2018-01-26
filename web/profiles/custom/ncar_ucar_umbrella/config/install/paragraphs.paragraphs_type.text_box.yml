@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: text_box
+label: 'Text Box'
+behavior_plugins: {  }

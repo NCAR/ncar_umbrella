@@ -1,0 +1,65 @@
+<?php
+/**
+ * @file
+ * Core functions for the Menu Default module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\NodeTypeInterface;
+
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for \Drupal\node\NodeForm.
+ *
+ * Make menu option mandatory based on configuration.
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function menu_default_form_node_form_alter(&$form, FormStateInterface $form_state) {
+  //only default the menu when adding a new page, not editing existing
+  if($form['#form_id'] == 'node_page_form') {
+    $node = $form_state->getFormObject()->getEntity();
+    /** @var \Drupal\node\Entity\NodeType $type */
+    $type = $node->type->entity;
+    if ($type->getThirdPartySetting('menu_default', 'menu_default', TRUE)) {
+      $form['menu']['#open'] = TRUE;
+      $form['menu']['enabled']['#default_value'] = TRUE;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for \Drupal\node\NodeTypeForm.
+ *
+ * Adds menu options to the node type form.
+ *
+ * @see NodeTypeForm::form()
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function menu_default_form_node_type_form_alter(&$form, FormStateInterface $form_state) {
+  /** @var \Drupal\node\NodeTypeInterface $type */
+  $type = $form_state->getFormObject()->getEntity();
+
+  $form['menu']['menu_default'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Check the "Provide a menu link" checkbox by default for this content type'),
+    '#default_value' => $type->getThirdPartySetting('menu_default', 'menu_default', TRUE),
+  );
+
+  $form['#entity_builders'][] = 'menu_default_form_node_type_form_builder';
+}
+
+
+/**
+ * Entity builder for the node type form with menu options.
+ *
+ * @see menu_default_form_node_type_form_alter()
+ * @param $entity_type
+ * @param \Drupal\node\NodeTypeInterface $type
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function menu_default_form_node_type_form_builder($entity_type, NodeTypeInterface $type, &$form, FormStateInterface $form_state) {
+  $type->setThirdPartySetting('menu_default', 'menu_default', $form_state->getValue('menu_default', TRUE));
+}

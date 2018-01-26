@@ -1,0 +1,141 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?3sf67g');
+  src:  url('fonts/icomoon.eot?3sf67g#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?3sf67g') format('truetype'),
+    url('fonts/icomoon.woff?3sf67g') format('woff'),
+    url('fonts/icomoon.svg?3sf67g#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-accronym-ncar-ucar:before {
+  content: "\e920";
+}
+.icon-accronym-ncar:before {
+  content: "\e921";
+}
+.icon-accronym-ucar:before {
+  content: "\e922";
+}
+.icon-government-relations:before {
+  content: "\e923";
+}
+.icon-press-room:before {
+  content: "\e924";
+}
+.icon-symbol-nsf:before {
+  content: "\e925";
+}
+.icon-climate:before {
+  content: "\e904";
+}
+.icon-scientific-program-support:before {
+  content: "\e914";
+}
+.icon-modeling-assimilation:before {
+  content: "\e90e";
+}
+.icon-diversity-outreach:before {
+  content: "\e907";
+}
+.icon-symbol-ncar:before {
+  content: "\e91f";
+}
+.icon-symbol-ucar:before {
+  content: "\e91e";
+}
+.icon-buildings:before {
+  content: "\e91d";
+}
+.icon-education-training:before {
+  content: "\e909";
+}
+.icon-about-programs:before {
+  content: "\e900";
+}
+.icon-advocacy:before {
+  content: "\e901";
+}
+.icon-altitude:before {
+  content: "\e902";
+}
+.icon-atmosphere:before {
+  content: "\e903";
+}
+.icon-computational-resources:before {
+  content: "\e905";
+}
+.icon-computing-data-services:before {
+  content: "\e906";
+}
+.icon-earth-system-sciences:before {
+  content: "\e908";
+}
+.icon-facilities:before {
+  content: "\e90a";
+}
+.icon-field-campaigns:before {
+  content: "\e90b";
+}
+.icon-labs:before {
+  content: "\e90c";
+}
+.icon-management:before {
+  content: "\e90d";
+}
+.icon-models:before {
+  content: "\e90f";
+}
+.icon-observations:before {
+  content: "\e910";
+}
+.icon-opportunities:before {
+  content: "\e911";
+}
+.icon-partnership:before {
+  content: "\e912";
+}
+.icon-scientific-data-software:before {
+  content: "\e913";
+}
+.icon-sun:before {
+  content: "\e915";
+}
+.icon-tech-transfers:before {
+  content: "\e916";
+}
+.icon-university-collaboration:before {
+  content: "\e917";
+}
+.icon-water:before {
+  content: "\e918";
+}
+.icon-weather:before {
+  content: "\e919";
+}
+.icon-what-we-do:before {
+  content: "\e91a";
+}
+.icon-what-we-offer:before {
+  content: "\e91b";
+}
+.icon-where-we-focus:before {
+  content: "\e91c";
+}
+

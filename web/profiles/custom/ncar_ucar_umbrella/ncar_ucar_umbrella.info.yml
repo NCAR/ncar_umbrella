@@ -1,0 +1,68 @@
+name: NCAR/UCAR Umbrella
+type: profile
+version: 8.x-1.3
+description: 'Drupal 8 distribution for UCAR/NCAR sites on Pantheon.'
+core: 8.x
+
+# Optional: Declare your installation profile as a distribution
+# This will make the installer auto-select this installation profile.
+# The distribution_name property is used in the installer and other places as
+# a label for the software being installed.
+distribution:
+  name: NCAR/UCAR Umbrella
+
+# Required modules
+dependencies:
+  - node
+  - block
+  - breakpoint
+  - ckeditor
+  - config
+  - contextual
+  - contact
+  - menu_link_content
+  - datetime
+  - block_content
+  - editor
+  - help
+  - image
+  - menu_ui
+  - options
+  - path
+  - page_cache
+  - dynamic_page_cache
+  - taxonomy
+  - dblog
+  - search
+  - shortcut
+  - toolbar
+  - field
+  - field_ui
+  - file
+  - rdf
+  - views
+  - views_ui
+  - tour
+  - automated_cron
+  - aggregator
+  #profile modules
+  - token
+  - pathauto
+  - ctools
+  - koru_blocks
+  - menu_default
+  - admin_toolbar
+  - admin_toolbar_tools
+  - entity_reference_revisions
+  - paragraphs
+  - paragraphs_alter
+  - select_icons
+  - koru_icons
+  - youtube
+  - maxlength
+  - externalauth
+  - simplesamlphp_auth
+  - ucar_alert
+themes:
+  - koru
+  - seven

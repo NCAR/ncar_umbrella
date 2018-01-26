@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_details_table_item_descrip
+    - paragraphs.paragraphs_type.details_table_item
+  module:
+    - text
+id: paragraph.details_table_item.field_details_table_item_descrip
+field_name: field_details_table_item_descrip
+entity_type: paragraph
+bundle: details_table_item
+label: Description
+description: ''
+required: true
+translatable: true
+default_value:
+  -
+    value: ' '
+    format: details_table
+default_value_callback: ''
+settings: {  }
+field_type: text_long

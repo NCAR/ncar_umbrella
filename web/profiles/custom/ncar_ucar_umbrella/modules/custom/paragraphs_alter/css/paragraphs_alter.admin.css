@@ -1,0 +1,28 @@
+.js .field--widget-entity-reference-paragraphs .field-multiple-table {
+    border: 1px solid #ccc;
+    background-color: #dee5f0;
+    border-collapse: inherit;
+}
+.js .field--widget-paragraphs td, .js .field--widget-entity-reference-paragraphs td {
+    padding: 10px;
+}
+
+.js .field--widget-entity-reference-paragraphs .field-multiple-table tr.even {
+    background-color: rgba(255,255,255,0.5);
+}
+
+.js .field--widget-entity-reference-paragraphs .field-multiple-table:not(:first-child) tr td {
+    border-top: 1px solid #ccc;
+}
+
+.js .paragraph-type-top {
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.js .paragraph-type-title {
+    font-size: 110%;
+    font-weight: bold;
+    color: #1d8995;
+}

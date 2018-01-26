@@ -1,0 +1,6 @@
+koru_icons.admin:
+  dependencies:
+      - select_icons/selecticons
+  css:
+    theme:
+      css/koru_icons.admin.css: {}

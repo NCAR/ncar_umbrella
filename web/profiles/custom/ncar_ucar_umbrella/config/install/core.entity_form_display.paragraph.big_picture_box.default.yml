@@ -1,0 +1,58 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.big_picture_box.field_big_picture_box_descript
+    - field.field.paragraph.big_picture_box.field_big_picture_box_image
+    - field.field.paragraph.big_picture_box.field_big_picture_box_link
+    - field.field.paragraph.big_picture_box.field_big_picture_box_title
+    - image.style.thumbnail
+    - paragraphs.paragraphs_type.big_picture_box
+  module:
+    - image
+    - link
+    - maxlength
+_core:
+  default_config_hash: 09npU7LnNqCJ96AxXkVJSiPZybZj7NyKsdiDyU4g0yE
+id: paragraph.big_picture_box.default
+targetEntityType: paragraph
+bundle: big_picture_box
+mode: default
+content:
+  field_big_picture_box_descript:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: 280
+        maxlength_js_label: 'Content limited to @limit characters, remaining: <strong>@remaining</strong>'
+        maxlength_js_enforce: true
+        maxlength_js_truncate_html: false
+    type: string_textarea
+  field_big_picture_box_image:
+    weight: 3
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+  field_big_picture_box_link:
+    weight: 2
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  field_big_picture_box_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+hidden:
+  created: true
+  status: true
+  uid: true

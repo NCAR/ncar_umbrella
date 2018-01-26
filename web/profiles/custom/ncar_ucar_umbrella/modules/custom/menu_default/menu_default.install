@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for Menu Default module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function menu_default_install() {
+  // Set the weight of the menu_default.module to 1
+  // so it is loaded after the menu_ui.module.
+  module_set_weight('menu_default', 1);
+
+}

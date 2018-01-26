@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  theme:
+    - koru
+id: componentsblock
+theme: koru
+region: content_footer
+weight: 0
+provider: null
+plugin: components_block
+settings:
+  id: components_block
+  label: 'Components block'
+  provider: koru_blocks
+  label_display: '0'
+  context_mapping:
+    node: '@node.node_route_context:node'
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      page: page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      page: page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

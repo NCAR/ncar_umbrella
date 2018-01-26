@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_icon_box_item
+    - paragraphs.paragraphs_type.icon_box
+    - paragraphs.paragraphs_type.icon_box_item
+  module:
+    - entity_reference_revisions
+id: paragraph.icon_box.field_icon_box_item
+field_name: field_icon_box_item
+entity_type: paragraph
+bundle: icon_box
+label: 'Icon Box Item'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      icon_box_item: icon_box_item
+    target_bundles_drag_drop:
+      icon_box:
+        weight: 8
+        enabled: false
+      icon_box_item:
+        enabled: true
+        weight: 9
+field_type: entity_reference_revisions

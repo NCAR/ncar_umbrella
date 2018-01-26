@@ -1,0 +1,3 @@
+services:
+  koru_menu.manager:
+    class: Drupal\koru_blocks\KoruMenuService

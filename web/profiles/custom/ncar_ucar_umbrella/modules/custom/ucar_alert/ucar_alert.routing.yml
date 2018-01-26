@@ -1,0 +1,7 @@
+ucar_alert.settings:
+  path: '/admin/config/services/ucar_alert_api'
+  defaults:
+    _form: '\Drupal\ucar_alert\Form\UcarAlertSettingsForm'
+    _title: 'UCAR Alert API'
+  requirements:
+    _permission: 'administer site configuration'

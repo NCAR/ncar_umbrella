@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: tadl_item
+label: 'Thumbnails & Description Landscape Item'
+behavior_plugins: {  }

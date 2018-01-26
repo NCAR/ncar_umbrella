@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: Topics
+vid: topics
+description: 'The topics associated with each news story'
+hierarchy: 0
+weight: 0

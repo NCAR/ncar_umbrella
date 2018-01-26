@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+name: Organizations
+vid: organizations
+description: 'The organization associated with each news story'
+hierarchy: 0
+weight: 0

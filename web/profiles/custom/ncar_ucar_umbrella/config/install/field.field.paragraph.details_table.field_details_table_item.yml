@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_details_table_item
+    - paragraphs.paragraphs_type.details_table
+    - paragraphs.paragraphs_type.details_table_item
+  module:
+    - entity_reference_revisions
+id: paragraph.details_table.field_details_table_item
+field_name: field_details_table_item
+entity_type: paragraph
+bundle: details_table
+label: 'Details Table Item'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler_settings:
+    target_bundles:
+      details_table_item: details_table_item
+    target_bundles_drag_drop:
+      details_table_item:
+        enabled: true
+  handler: 'default:paragraph'
+field_type: entity_reference_revisions

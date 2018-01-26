@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_tadp_item_link
+    - paragraphs.paragraphs_type.tadp_item
+  module:
+    - link
+id: paragraph.tadp_item.field_tadp_item_link
+field_name: field_tadp_item_link
+entity_type: paragraph
+bundle: tadp_item
+label: 'Item Link'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 2
+field_type: link

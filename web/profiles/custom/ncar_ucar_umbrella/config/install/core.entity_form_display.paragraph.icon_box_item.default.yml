@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.icon_box_item.field_icon_box_item_icon
+    - field.field.paragraph.icon_box_item.field_icon_box_item_label
+    - field.field.paragraph.icon_box_item.field_icon_box_item_link
+    - paragraphs.paragraphs_type.icon_box_item
+  module:
+    - koru_icons
+    - link
+id: paragraph.icon_box_item.default
+targetEntityType: paragraph
+bundle: icon_box_item
+mode: default
+content:
+  field_icon_box_item_icon:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: koru_icons_default
+  field_icon_box_item_label:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_icon_box_item_link:
+    weight: 2
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+hidden:
+  created: true
+  status: true
+  uid: true

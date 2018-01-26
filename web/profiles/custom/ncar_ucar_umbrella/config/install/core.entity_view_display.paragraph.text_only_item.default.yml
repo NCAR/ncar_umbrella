@@ -1,0 +1,40 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.text_only_item.field_text_only_item_description
+    - field.field.paragraph.text_only_item.field_text_only_item_link
+    - field.field.paragraph.text_only_item.field_text_only_item_title
+    - paragraphs.paragraphs_type.text_only_item
+  module:
+    - link
+id: paragraph.text_only_item.default
+targetEntityType: paragraph
+bundle: text_only_item
+mode: default
+content:
+  field_text_only_item_description:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_text_only_item_link:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+  field_text_only_item_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+hidden: {  }

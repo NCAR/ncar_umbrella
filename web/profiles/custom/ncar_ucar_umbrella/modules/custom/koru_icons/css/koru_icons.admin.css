@@ -1,0 +1,13 @@
+@import url(../../../../themes/custom/koru/libraries/koru-base/fonts/icomoon/style.css);
+
+.ui-selectmenu-button span.ui-selectmenu-text {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+.ui-selectmenu-menu .ui-menu .ui-menu-item {
+    padding-left: 55px;
+    border-bottom: 1px solid #ccc;
+}
+.ui-widget.ui-selectmenu-button .ui-current-item-icon {
+    vertical-align: top;
+}

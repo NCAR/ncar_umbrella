@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: details_table_item
+label: 'Details Table Item'
+behavior_plugins: {  }

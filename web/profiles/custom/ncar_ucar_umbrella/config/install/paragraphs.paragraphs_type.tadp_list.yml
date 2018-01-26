@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: tadp_list
+label: 'Thumbnails & Description Portrait'
+behavior_plugins: {  }

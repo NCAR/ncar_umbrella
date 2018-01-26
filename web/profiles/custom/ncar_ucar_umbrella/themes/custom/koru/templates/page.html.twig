@@ -1,0 +1,48 @@
+{#
+* Regions:
+* - page.header: i.e. logo, top menu.
+* - page.banner: i.e. hero.
+* - page.content: i.e. body field
+* - page.sidebar: i.e. menu block, related links block
+* - page.content_footer: i.e. components/paragraphs
+* - page.footer: i.e. footer block
+*
+* Variables:
+* - koru_with_sidebar: whether the sidebar should be shown. See koru_blocks.module.
+*   Ideally, Drupal should handle this, but because of a bug, empty blocks
+*   still get shown in a region. See https://www.drupal.org/node/2702087
+#}
+<header>
+  <div data-sticky-container>
+    <div class="sticky" data-sticky data-options="marginTop:0;stickyOn:small;" data-top-anchor="main-content">
+      {{ page.header }}
+    </div>
+  </div>
+</header>
+
+<div class="body-content" id="main-content">
+    {{ page.banner }}
+
+    <div>
+      <section class="panel primary-content">
+        <div class="row">
+          <div class="columns {% if koru_with_sidebar %} large-9 medium-8 small-12 {% else %} medium-10 small-12 columns-centered {% endif %}">
+              {{ page.content }}
+          </div>
+
+          {% if koru_with_sidebar %}
+            <div class="columns large-3 medium-4 small-12 sidebar">
+              {{ page.sidebar }}
+            </div>
+          {% endif %}
+
+        </div><!-- main-content row -->
+      </section>
+    </div>
+
+    {{ page.content_footer }}
+</div><!--/ .page-wrap -->
+
+<footer>
+  {{ page.footer }}
+</footer>

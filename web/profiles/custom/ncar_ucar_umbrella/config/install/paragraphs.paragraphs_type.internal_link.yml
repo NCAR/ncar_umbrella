@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: internal_link
+label: 'Internal Link'
+behavior_plugins: {  }

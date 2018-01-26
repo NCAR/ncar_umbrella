@@ -1,0 +1,51 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.tadl_item.field_tadl_item_description
+    - field.field.paragraph.tadl_item.field_tadl_item_link
+    - field.field.paragraph.tadl_item.field_tadl_item_title
+    - field.field.paragraph.tadl_item.field_tadl_item_image
+    - paragraphs.paragraphs_type.tadl_item
+    - image.style.small_landscape
+  module:
+    - link
+    - image
+id: paragraph.tadl_item.default
+targetEntityType: paragraph
+bundle: tadl_item
+mode: default
+content:
+  field_tadl_item_description:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_tadl_item_link:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+  field_tadl_item_image:
+    weight: 3
+    label: hidden
+    settings:
+      image_style: 'small_landscape'
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+  field_tadl_item_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+hidden: {  }

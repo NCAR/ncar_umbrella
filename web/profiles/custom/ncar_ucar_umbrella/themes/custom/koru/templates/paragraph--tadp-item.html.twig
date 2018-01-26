@@ -1,0 +1,23 @@
+<li class="columns small-12 medium-12 large-6" data-equalizer-watch>
+  <a href="{{ content.field_tadp_item_link[0]['#url'] }}" class="post-image">
+    <img src="{{ tadp_item_image_style_uri }}" alt="{{ content.field_tadp_item_image['#items'].alt }}">
+  </a>
+  <div class="details">
+    <h4>
+      <a href="{{ content.field_tadp_item_link[0]['#url'] }}">{{ content.field_tadp_item_title[0] }}</a>
+    </h4>
+    {% if content.field_tadp_item_subtitle[0] %}
+      <div>
+        <b>{{ content.field_tadp_item_subtitle[0] }}</b>
+      </div>
+    {% endif %}
+    <div class="excerpt">
+      <p>{{ content.field_tadp_item_description[0] }}</p>
+    </div>
+    {% if content.field_tadp_item_link[0] %}
+      <span class="cta-wrapper small dark-blue-on-gray">
+      {{ content.field_tadp_item_link }}
+    </span>
+    {% endif %}
+  </div>
+</li>

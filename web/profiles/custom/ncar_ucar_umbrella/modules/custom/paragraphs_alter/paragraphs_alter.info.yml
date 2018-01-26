@@ -1,0 +1,10 @@
+name: Paragraphs Alter
+type: module
+description: "Customize the Paragraphs Admin interface."
+package: Paragraphs
+# core: 8.x
+dependencies:
+  - paragraphs
+
+version: '8.x-1.0'
+core: '8.x'

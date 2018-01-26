@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_details_table_width
+    - paragraphs.paragraphs_type.details_table
+  module:
+    - options
+id: paragraph.details_table.field_details_table_width
+field_name: field_details_table_width
+entity_type: paragraph
+bundle: details_table
+label: 'Component Width'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

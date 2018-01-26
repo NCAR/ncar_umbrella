@@ -1,0 +1,63 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.tadp_item.field_tadp_item_description
+    - field.field.paragraph.tadp_item.field_tadp_item_image
+    - field.field.paragraph.tadp_item.field_tadp_item_link
+    - field.field.paragraph.tadp_item.field_tadp_item_subtitle
+    - field.field.paragraph.tadp_item.field_tadp_item_title
+    - image.style.thumbnail
+    - paragraphs.paragraphs_type.tadp_item
+  module:
+    - image
+    - link
+id: paragraph.tadp_item.default
+targetEntityType: paragraph
+bundle: tadp_item
+mode: default
+content:
+  field_tadp_item_description:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_tadp_item_image:
+    weight: 4
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
+  field_tadp_item_link:
+    weight: 3
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_tadp_item_subtitle:
+    type: string_textfield
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  field_tadp_item_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

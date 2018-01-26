@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_big_picture_box_link
+    - paragraphs.paragraphs_type.big_picture_box
+  module:
+    - link
+id: paragraph.big_picture_box.field_big_picture_box_link
+field_name: field_big_picture_box_link
+entity_type: paragraph
+bundle: big_picture_box
+label: Link
+description: 'Please keep link text to 12 characters or less.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 2
+field_type: link

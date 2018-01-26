@@ -1,0 +1,15 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for \Drupal\node\NodeForm.
+ *
+ * Add css to prettify the paragraphs admin.
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function paragraphs_alter_form_node_form_alter(&$form, FormStateInterface $form_state) {
+
+  $form['#attached']['library'][] = 'paragraphs_alter/paragraphs_alter.admin';
+}

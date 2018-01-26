@@ -1,0 +1,8 @@
+name: Koru Blocks
+type: module
+description: 'Provides custom blocks used by the Koru theme.'
+package: Koru Blocks
+# core: 8.x
+
+version: '8.x-1.0-alpha1'
+core: '8.x'

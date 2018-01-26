@@ -1,0 +1,7 @@
+name: UCAR Alert
+type: module
+description: 'Provides a block, settings and service to check for and display a UCAR Alert in the Koru theme, populated from an API on the news.ucar.edu site.'
+configure: 'ucar_alert.settings'
+package: UCAR Alert
+version: '8.x-1.0'
+core: '8.x'

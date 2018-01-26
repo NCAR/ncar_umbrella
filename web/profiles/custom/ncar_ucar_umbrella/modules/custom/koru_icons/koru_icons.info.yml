@@ -1,0 +1,10 @@
+name: Koru Icons
+type: module
+description: "Provides a Field Widget to select Koru Icomoon Icons."
+package: Koru Icons
+dependencies:
+  - select_icons
+
+core: '8.x'
+version: '8.x-1.0'
+

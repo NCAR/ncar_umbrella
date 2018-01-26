@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_icon_box_cap_item_descript
+    - paragraphs.paragraphs_type.icon_box_with_caption_item
+id: paragraph.icon_box_with_caption_item.field_icon_box_cap_item_descript
+field_name: field_icon_box_cap_item_descript
+entity_type: paragraph
+bundle: icon_box_with_caption_item
+label: Description
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

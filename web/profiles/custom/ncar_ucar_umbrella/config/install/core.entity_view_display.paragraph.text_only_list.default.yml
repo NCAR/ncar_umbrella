@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.text_only_list.field_text_only_list_description
+    - field.field.paragraph.text_only_list.field_text_only_list_item
+    - field.field.paragraph.text_only_list.field_text_only_list_link
+    - field.field.paragraph.text_only_list.field_text_only_list_title
+    - paragraphs.paragraphs_type.text_only_list
+  module:
+    - entity_reference_revisions
+    - link
+id: paragraph.text_only_list.default
+targetEntityType: paragraph
+bundle: text_only_list
+mode: default
+content:
+  field_text_only_list_description:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_text_only_list_item:
+    type: entity_reference_revisions_entity_view
+    weight: 3
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_text_only_list_link:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+  field_text_only_list_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+hidden: {  }

@@ -1,0 +1,6 @@
+paragraphs_alter.admin:
+  dependencies:
+      - paragraphs/drupal.paragraphs.admin
+  css:
+    theme:
+      css/paragraphs_alter.admin.css: {}

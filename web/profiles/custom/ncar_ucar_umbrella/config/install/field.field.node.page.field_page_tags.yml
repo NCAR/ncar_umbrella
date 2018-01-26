@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_page_tags
+    - node.type.page
+    - taxonomy.vocabulary.tags
+id: node.page.field_page_tags
+field_name: field_page_tags
+entity_type: node
+bundle: page
+label: Tags
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler_settings:
+    target_bundles:
+      tags: tags
+  handler: 'default:taxonomy_term'
+field_type: entity_reference

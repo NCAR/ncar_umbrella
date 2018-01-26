@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+name: large_news_feed
+label: 'Large News Feed (775x550)'
+effects:
+  c7235524-cc95-46c7-829c-ba2b7da40ddc:
+    uuid: c7235524-cc95-46c7-829c-ba2b7da40ddc
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 775
+      height: 550

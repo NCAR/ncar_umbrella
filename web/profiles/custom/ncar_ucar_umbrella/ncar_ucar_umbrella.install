@@ -1,0 +1,1144 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the profilename install profile.
+ */
+
+use Drupal\block\Entity\Block;
+use Drupal\editor\Entity\Editor;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\filter\Entity\FilterFormat;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\Entity\Vocabulary;
+use Symfony\Component\Yaml\Yaml;
+use Drupal\paragraphs\Entity\ParagraphsType;
+use Drupal\image\Entity\ImageStyle;
+use Drupal\user\Entity\Role;
+
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for this profile.
+ *
+ * @see system_install()
+ */
+function ncar_ucar_umbrella_install()
+{
+  // First, do everything in standard profile.
+  include_once DRUPAL_ROOT . '/core/profiles/standard/standard.install';
+  standard_install();
+
+  // Can add code in here to make nodes, terms, etc.
+  $vocabularies = [
+    'topics' => [
+      'name' => 'Topics',
+      'description' => 'The topics associated with each news story',
+      'terms' => [
+        'Air Quality' => [],
+        'Climate' => [],
+        'Data' => [],
+        'Education & Outreach' => [],
+        'Government Relations' => [],
+        'Organization' => [],
+        'Sun & Space Weather' => [],
+        'Supercomputing' => [],
+        'Water' => [],
+        'Weather' => []
+      ]
+    ],
+    'tags' => [
+      'name' => 'Tags',
+      'description' => 'The tags associated with each news story',
+      'terms' => [
+        'Chemistry' => [],
+        'Diversity' => [],
+        'Ecosystems' => [],
+        'Energy' => [],
+        'Events' => [],
+        'Health' => [],
+        'Ice' => [],
+        'Land' => [],
+        'Modeling' => [],
+        'Observing' => [],
+        'Ocean' => [],
+        'People' => [],
+        'Societal Impacts' => [],
+        'Tech Transfer' => [],
+        'Transportation' => [],
+        'Wildfire' => [],
+        'News Release' => [],
+        'Staff News' => [],
+        'Washington Update' => []
+      ]
+    ],
+    'organizations' => [
+      'name' => 'Organizations',
+      'description' => 'The organization associated with each news story',
+      'terms' => [
+        'NCAR' => [
+          'ACOM',
+          'CGD',
+          'CISL',
+          'EOL',
+          'HAO',
+          'MMM',
+          'RAL'
+        ],
+        'UCAR' => [],
+        'UCAR Community Programs' => [
+          'COMET',
+          'COSMIC',
+          'CPAESS',
+          'GLOBE',
+          'SCIED',
+          'UNIDATA'
+        ]
+      ]
+    ]
+  ];
+
+  foreach ($vocabularies as $vocabulary => $values) {
+    $existingVocabulary = Vocabulary::load($vocabulary);
+
+    if (!$existingVocabulary) {
+      $newVocabulary = Vocabulary::create([
+        'name' => $values['name'],
+        'description' => $values['description'],
+        'vid' => $vocabulary,
+      ]);
+      $newVocabulary->save();
+    }
+
+    foreach ($values['terms'] as $key => $value) {
+      $existingTerm = Term::load($key);
+
+      if (!$existingTerm) {
+        $parentTerm = Term::create([
+          'name' => $key,
+          'vid' => $vocabulary,
+        ]);
+
+        $parentTerm->save();
+
+        if (is_array($value)) {
+          foreach ($value as $child) {
+            $newChild = Term::create([
+              'name' => $child,
+              'vid' => $vocabulary,
+              'parent' => $parentTerm->id()
+            ]);
+
+            $newChild->save();
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Switch the video paragraph to use youtube module rather than video module
+ */
+function ncar_ucar_umbrella_update_8001()
+{
+
+  $profile_config_dir = drupal_get_path('profile', 'ncar_ucar_umbrella') . '/config/install';
+
+  \Drupal::service('module_installer')->install(['youtube']);
+
+  $config_path = $profile_config_dir . '/youtube.settings.yml';
+  $data = Yaml::parse($config_path);
+  \Drupal::configFactory()
+    ->getEditable('youtube.settings')
+    ->setData($data)
+    ->save(TRUE);
+
+  $db = \Drupal::database();
+
+  //get field data to re-insert later
+  $links = $db
+    ->select('paragraph__field_video_link')
+    ->fields('paragraph__field_video_link')
+    ->execute()
+    ->fetchAll();
+
+  //get revision data
+  $revisions = $db
+    ->select('paragraph_revision__field_video_link')
+    ->fields('paragraph_revision__field_video_link')
+    ->execute()
+    ->fetchAll();
+
+  //delete video_link field using video module
+  /** @var \Drupal\Core\Entity\EntityFieldManager $entityManager */
+  $entityManager = \Drupal::service('entity_field.manager');
+  $fields = $entityManager->getFieldDefinitions('paragraph', 'video');
+
+  /** @var Drupal\field\Entity\FieldConfig $field */
+  if ($field = $fields['field_video_link']) {
+    $field->delete();
+    field_purge_batch(200);
+  }
+
+  //add video_link field using youtube module
+  if (!FieldConfig::load('field_video_link')) {
+
+    $config = \Drupal::configFactory();
+
+    //update entity config
+    $config_path = $profile_config_dir . '/core.entity_form_display.paragraph.video.default.yml';
+    $data = Yaml::parse($config_path);
+    $config->getEditable('core.entity_form_display.paragraph.video.default')
+      ->setData($data)
+      ->save(TRUE);
+
+    $config_path = $profile_config_dir . '/core.entity_view_display.paragraph.video.default.yml';
+    $data = Yaml::parse($config_path);
+    $config->getEditable('core.entity_view_display.paragraph.video.default')
+      ->setData($data)
+      ->save(TRUE);
+
+    //these actually create the paragraph__field_video_link and revision tables
+    $field_storage = entity_create('field_storage_config', array(
+      'field_name' => 'field_video_link',
+      'entity_type' => 'paragraph',
+      'type' => 'youtube',
+    ));
+    $field_storage->save();
+    $field = entity_create('field_config', array(
+      'entity_type' => 'paragraph',
+      'field_name' => 'field_video_link',
+      'field_storage' => $field_storage,
+      'bundle' => 'video',
+      'label' => "Video Link",
+    ));
+    $field->save();
+
+    //reset field config
+    $config_path = $profile_config_dir . '/field.storage.paragraph.field_video_link.yml';
+    $data = Yaml::parse($config_path);
+    $config->getEditable('field.storage.paragraph.field_video_link')
+      ->setData($data)
+      ->save(TRUE);
+
+    $config_path = $profile_config_dir . '/field.field.paragraph.video.field_video_link.yml';
+    $data = Yaml::parse($config_path);
+    $config->getEditable('field.field.paragraph.video.field_video_link')
+      ->setData($data)
+      ->save(TRUE);
+  }
+
+  //add link data back to table
+  $fields = ['bundle', 'deleted', 'entity_id', 'revision_id', 'langcode', 'delta', 'field_video_link_input', 'field_video_link_video_id'];
+  foreach ($links as $link) {
+    $query = $db->insert('paragraph__field_video_link');
+    $query->fields($fields);
+    $values = [];
+    foreach ($fields as $field) {
+      if (isset($link->$field)) {
+        $values[] = $link->$field;
+      }
+    }
+    //video module stores data as serialized string
+    $data = unserialize($link->field_video_link_data);
+    $values[] = $data[0];//full yt url
+    $values[] = $data['id'];//just the yt video id
+    $query->values($values);
+    $query->execute();
+  }
+
+  //add revision data
+  foreach ($revisions as $revision) {
+    $query = $db->insert('paragraph_revision__field_video_link');
+    $query->fields($fields);
+    $values = [];
+    foreach ($fields as $field) {
+      if (isset($revision->$field)) {
+        $values[] = $revision->$field;
+      }
+    }
+    //video module stores data as serialized string
+    $data = unserialize($revision->field_video_link_data);
+    $values[] = $data[0];//full yt url
+    $values[] = $data['id'];//just the yt video id
+    $query->values($values);
+    $query->execute();
+  }
+
+  //remove video module
+  \Drupal::service('module_installer')->uninstall(['video']);
+}
+
+/**
+ * Add subtitle field to thumbnail portrait paragraph type
+ */
+function ncar_ucar_umbrella_update_8101()
+{
+  $fieldStorage = FieldStorageConfig::loadByName('paragraph', 'field_tadp_item_subtitle');
+  $fieldSubtitle = FieldConfig::loadByName('paragraph', 'tadp_item', 'field_tadp_item_subtitle');
+  $fieldDescription = FieldConfig::loadByName('paragraph', 'tadp_item', 'field_tadp_item_description');
+  $fieldLink = FieldConfig::loadByName('paragraph', 'tadp_item', 'field_tadp_item_link');
+  $fieldImage = FieldConfig::loadByName('paragraph', 'tadp_item', 'field_tadp_item_image');
+
+  if (empty($fieldStorage)) {
+    $fieldStorage = FieldStorageConfig::create([
+      'field_name' => 'field_tadp_item_subtitle',
+      'entity_type' => 'paragraph',
+      'type' => 'string'
+    ]);
+
+    $fieldStorage->save();
+  }
+
+  if (empty($fieldSubtitle)) {
+    $fieldSubtitle = FieldConfig::create([
+      'field_storage' => $fieldStorage,
+      'bundle' => 'tadp_item',
+      'label' => 'Subtitle',
+      'field_name' => 'field_tadp_item_subtitle',
+      'entity_type' => 'paragraph'
+    ]);
+
+    $fieldSubtitle->save();
+
+    $formDisplay = \Drupal::entityTypeManager()
+      ->getStorage('entity_form_display')
+      ->load('paragraph' . '.' . 'tadp_item' . '.' . 'default');
+
+    $formDisplay->setComponent('field_tadp_item_subtitle', array(
+      'type' => 'string_textfield',
+      'weight' => 1,
+    ))
+      ->save();
+
+    $viewDisplay = \Drupal::entityTypeManager()
+      ->getStorage('entity_view_display')
+      ->load('paragraph' . '.' . 'tadp_item' . '.' . 'default');
+
+    $viewDisplay->setComponent('field_tadp_item_subtitle', array(
+      'label' => 'hidden',
+      'type' => 'text_default',
+      'weight' => 1,
+    ))
+      ->save();
+
+    if ($fieldDescription) {
+      $formDisplay->setComponent('field_tadp_item_description', array(
+        'weight' => 2,
+      ))
+        ->save();
+
+      $viewDisplay->setComponent('field_tadp_item_description', array(
+        'label' => 'hidden',
+        'weight' => 2,
+      ))
+        ->save();
+    }
+
+    if ($fieldLink) {
+      $formDisplay->setComponent('field_tadp_item_link', array(
+        'weight' => 3,
+      ))
+        ->save();
+
+      $viewDisplay->setComponent('field_tadp_item_link', array(
+        'label' => 'hidden',
+        'weight' => 3,
+      ))
+        ->save();
+    }
+
+    if ($fieldImage) {
+      $formDisplay->setComponent('field_tadp_item_image', array(
+        'weight' => 4,
+      ))
+        ->save();
+
+      $viewDisplay->setComponent('field_tadp_item_image', array(
+        'label' => 'hidden',
+        'weight' => 4,
+      ))
+        ->save();
+    }
+  }
+}
+
+/**
+ * Make URL field optional on thumbnail portrait paragraph type
+ */
+function ncar_ucar_umbrella_update_8102()
+{
+  $fieldLink = FieldConfig::loadByName('paragraph', 'tadp_item', 'field_tadp_item_link');
+  if ($fieldLink instanceof FieldConfig && $fieldLink->isRequired()) {
+    $fieldLink->setRequired(false)->save();
+  }
+}
+
+/**
+ * Add Internal Links Paragraph type to Related Links
+ */
+function ncar_ucar_umbrella_update_8103()
+{
+  $entity_type = 'paragraph';
+  $paragraph_type_name = 'internal_link';
+  $field_name = 'field_' . $paragraph_type_name . '_link';
+
+  $paragraph_type = ParagraphsType::create([
+    'label' => 'Internal Link',
+    'id' => $paragraph_type_name,
+    'behavior_plugins' => [],
+  ]);
+  $paragraph_type->save();
+
+  $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+  if (!$field_storage) {
+    $field_storage = FieldStorageConfig::create([
+      'field_name' => $field_name,
+      'entity_type' => $entity_type,
+      'type' => 'link'
+    ]);
+    $field_storage->save();
+  }
+
+  $field_config = FieldConfig::loadByName($entity_type, $paragraph_type_name, $field_name);
+  if (!$field_config) {
+    $field_config = FieldConfig::create([
+      'field_storage' => $field_storage,
+      'bundle' => $paragraph_type_name,
+      'label' => 'Internal Link',
+      'field_name' => $field_name,
+      'entity_type' => $entity_type,
+      'settings' => [
+        'link_type' => 1, //internal only
+        'title' => 2 //require link text
+      ]
+    ]);
+    $field_config->save();
+  }
+
+  $manager = \Drupal::entityTypeManager();
+
+  $formDisplay = $manager->getStorage('entity_form_display')
+    ->create([
+      'targetEntityType' => $entity_type,
+      'bundle' => $paragraph_type_name,
+      'mode' => 'default',
+      'status' => true,
+    ]);
+  $formDisplay->setComponent($field_name, array(
+    'type' => 'link_default'
+  ))->save();
+
+  $viewDisplay = $manager->getStorage('entity_view_display')
+    ->create([
+      'targetEntityType' => $entity_type,
+      'bundle' => $paragraph_type_name,
+      'mode' => 'default',
+      'status' => TRUE,
+    ]);
+
+  $viewDisplay->setComponent($field_name, array(
+    'label' => 'hidden',
+    'type' => 'link'
+  ))->save();
+
+  $field = FieldConfig::loadByName('node', 'page', 'field_page_related_links');
+  if ($field instanceof FieldConfig) {
+    $settings = $field->getSettings();
+    $target_bundles = $settings['handler_settings']['target_bundles'];
+    $target_bundles += ['internal_link' => 'internal_link'];
+
+    $target_bundles_drag_drop = $settings['handler_settings']['target_bundles_drag_drop'];
+    $target_bundles_drag_drop += ['internal_link' => ['enabled' => 1]];
+
+    $field->setSetting('handler_settings', [
+      'target_bundles' => $target_bundles,
+      'target_bundles_drag_drop' => $target_bundles_drag_drop
+    ])->save();
+  }
+}
+
+/**
+ * Add Details Table Item and Details Table components
+ */
+function ncar_ucar_umbrella_update_8104()
+{
+  $entity_type = 'paragraph';
+  $paragraphs = [
+    'details_table_item' => [
+      'label' => 'Details Table Item',
+      'fields' => [
+        'title' => [
+          'type' => 'string',
+          'label' => 'Title',
+          'form_display' => [
+            'type' => 'string_textfield',
+            'weight' => 0
+          ],
+          'view_display' => [
+            'type' => 'string',
+            'label' => 'hidden'
+          ]
+        ],
+        'descrip' => [
+          'type' => 'text_long',
+          'label' => 'Description',
+          'default_value' => [
+            [
+              'value' => ' ', // account for a bug in Drupal that does not set the default format without a set value
+              'format' => 'details_table'
+            ]
+          ],
+          'form_display' => [
+            'type' => 'text_textarea',
+            'weight' => 1
+          ],
+          'view_display' => [
+            'type' => 'text_default',
+            'label' => 'hidden'
+          ]
+        ],
+        'details' => [
+          'type' => 'text_long',
+          'label' => 'Details',
+          'default_value' => [
+            [
+              'value' => ' ', // account for a bug in Drupal that does not set the default format without a set value
+              'format' => 'details_table'
+            ]
+          ],
+          'form_display' => [
+            'type' => 'text_textarea',
+            'weight' => 2
+          ],
+          'view_display' => [
+            'type' => 'text_default',
+            'label' => 'hidden'
+          ]
+        ]
+      ],
+    ],
+    'details_table' => [
+      'label' => 'Details Table',
+      'fields' => [
+        'title' => [
+          'type' => 'string',
+          'label' => 'Title',
+          'form_display' => [
+            'type' => 'string_textfield',
+            'weight' => 0
+          ],
+          'view_display' => [
+            'type' => 'string',
+            'label' => 'hidden'
+          ]
+        ],
+        'description' => [
+          'type' => 'string_long',
+          'label' => 'Description',
+          'required' => false,
+          'form_display' => [
+            'type' => 'string_textarea',
+            'weight' => 1
+          ],
+          'view_display' => [
+            'type' => 'basic_string',
+            'label' => 'hidden'
+          ]
+        ],
+        'width' => [
+          'type' => 'list_string',
+          'label' => 'Component Width',
+          'storage_settings' => [
+            'allowed_values' => [
+              'narrow' => 'Narrow',
+              'wide' => 'Wide'
+            ]
+          ],
+          'form_display' => [
+            'type' => 'options_select',
+            'weight' => 2
+          ],
+          'view_display' => [
+            'type' => 'list_default',
+            'label' => 'hidden'
+          ]
+        ],
+        'item' => [
+          'type' => 'entity_reference_revisions',
+          'label' => 'Details Table Item',
+          'cardinality' => -1,
+          'settings' => [
+            'handler_settings' => [
+              'target_bundles' => [
+                'details_table_item' => 'details_table_item'
+              ],
+              'target_bundles_drag_drop' => [
+                'details_table_item' => [
+                  'enabled' => true,
+                ]
+              ]
+            ]
+          ],
+          'storage_settings' => [
+            'target_type' => 'paragraph'
+          ],
+          'form_display' => [
+            'type' => 'entity_reference_paragraphs',
+            'weight' => 3,
+          ],
+          'view_display' => [
+            'type' => 'entity_reference_revisions_entity_view',
+            'label' => 'hidden'
+          ]
+        ]
+      ]
+    ]
+  ];
+
+  $filtered_html_format = FilterFormat::create([
+    'format' => 'details_table',
+    'name' => 'Details Table',
+    'weight' => 5,
+    'filters' => [
+      'filter_html' => [
+        'status' => true,
+        'settings' => [
+          'allowed_html' => '<br> <strong> <ul type> <ol start type> <li> <dl> <dt> <dd>',
+        ],
+      ],
+    ],
+  ]);
+  $filtered_html_format->save();
+
+  $editor = Editor::create([
+    'format' => 'details_table',
+    'editor' => 'ckeditor',
+    'settings' => [
+      'toolbar' => [
+        'rows' => [
+          [
+            [
+              'name' => 'Formatting',
+              'items' => [
+                'Bold',
+              ],
+            ],
+            [
+              'name' => 'Lists',
+              'items' => [
+                'BulletedList',
+                'NumberedList',
+                'Outdent',
+                'Indent',
+              ],
+            ],
+            [
+              'name' => 'Tools',
+              'items' => [
+                'Source',
+              ],
+            ],
+          ],
+        ],
+      ],
+    ]
+  ]);
+  $editor->save();
+
+  $manager = \Drupal::entityTypeManager();
+
+  foreach ($paragraphs as $paragraph => $settings) {
+    $paragraphEntity = $manager->getStorage('paragraphs_type')
+      ->load($paragraph);
+
+    if (empty($paragraphEntity)) {
+      $paragraph_type = ParagraphsType::create([
+        'label' => $settings['label'],
+        'id' => $paragraph,
+        'behavior_plugins' => [],
+      ]);
+      $paragraph_type->save();
+    }
+
+    $formDisplay = $manager->getStorage('entity_form_display')
+      ->create([
+        'targetEntityType' => $entity_type,
+        'bundle' => $paragraph,
+        'mode' => 'default',
+        'status' => true,
+      ]);
+
+    $viewDisplay = $manager->getStorage('entity_view_display')
+      ->create([
+        'targetEntityType' => $entity_type,
+        'bundle' => $paragraph,
+        'mode' => 'default',
+        'status' => TRUE,
+      ]);
+
+    foreach ($settings['fields'] as $field => $options) {
+      $field_name = 'field_' . $paragraph . '_' . $field;
+      $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+
+      if (!$field_storage) {
+        $field_storage = FieldStorageConfig::create([
+          'field_name' => $field_name,
+          'entity_type' => $entity_type,
+          'type' => $options['type'],
+          'cardinality' => isset($options['cardinality']) ? $options['cardinality'] : 1,
+          'settings' => isset($options['storage_settings']) ? $options['storage_settings'] : array(),
+        ]);
+        $field_storage->save();
+      }
+
+      $field_config = FieldConfig::loadByName($entity_type, $paragraph, $field_name);
+
+      if (!$field_config) {
+        $field_config = FieldConfig::create([
+          'field_storage' => $field_storage,
+          'bundle' => $paragraph,
+          'label' => $options['label'],
+          'field_name' => $field_name,
+          'entity_type' => $entity_type,
+          'required' => isset($options['required']) ? $options['required'] : true,
+          'settings' => isset($options['settings']) ? $options['settings'] : array(),
+          'default_value' => isset($options['default_value']) ? $options['default_value'] : array()
+        ]);
+        $field_config->save();
+      }
+
+      $formDisplay->setComponent($field_name, $options['form_display']);
+      $viewDisplay->setComponent($field_name, $options['view_display']);
+    }
+
+    $formDisplay->save();
+    $viewDisplay->save();
+  }
+
+  $field = FieldConfig::loadByName('node', 'page', 'field_page_components');
+
+  if ($field instanceof FieldConfig) {
+    $settings = $field->getSettings();
+    $target_bundles = $settings['handler_settings']['target_bundles'];
+    $target_bundles += ['details_table' => 'details_table'];
+
+    $target_bundles_drag_drop = $settings['handler_settings']['target_bundles_drag_drop'];
+    $target_bundles_drag_drop += ['details_table' => ['enabled' => 1, 'weight' => 1]];
+    $target_bundles_drag_drop['big_picture_box'] = ['enabled' => 1, 'weight' => 0];
+
+    $field->setSetting('handler_settings', [
+      'target_bundles' => $target_bundles,
+      'target_bundles_drag_drop' => $target_bundles_drag_drop
+    ])->save();
+  }
+}
+
+/**
+ * Update 4 blocks to be visible only on page content type
+ */
+function ncar_ucar_umbrella_update_8105() {
+
+  $default_theme = \Drupal::config('system.theme')->get('default');
+
+  $update_blocks =  ['bannerblock', 'componentsblock', 'relatedlinksblock', 'sidebarblock'];
+
+  $visibility_config = [
+    'node_type' => [
+      'bundles' => ['page' => 'page'],
+      'negate' => false,
+      'context_mapping' => ['node' => '@node.node_route_context:node']
+    ],
+    'entity_bundle:node' => [
+      'bundles' => ['page' => 'page'],
+      'negate' => false,
+      'context_mapping' => ['node' => '@node.node_route_context:node']
+    ]
+  ];
+
+  foreach($update_blocks as $block_name) {
+    $koru_block = Block::load($block_name);
+    $theme_block = Block::load($default_theme . '_' . $block_name);
+
+    foreach($visibility_config as $id => $config) {
+      if($koru_block) {
+        $koru_block->setVisibilityConfig($id, $config);
+        $koru_block->save();
+      }
+      if($theme_block) {
+        $theme_block->setVisibilityConfig($id, $config);
+        $theme_block->save();
+      }
+    }
+  }
+}
+
+/**
+ * Make description field optional on thumbnail and video paragraph types
+ */
+function ncar_ucar_umbrella_update_8106()
+{
+  $paragraphs = [
+    'tadl_list' => [
+      'entity' => 'paragraph',
+      'field' => 'field_tadl_list_description'
+    ],
+    'tadp_list' => [
+      'entity' => 'paragraph',
+      'field' => 'field_tadp_list_description'
+    ],
+    'video' => [
+      'entity' => 'paragraph',
+      'field' => 'field_video_description'
+    ]
+  ];
+
+  foreach ($paragraphs as $paragraph => $field) {
+    $fieldDescription = FieldConfig::loadByName($field['entity'], $paragraph, $field['field']);
+
+    if ($fieldDescription instanceof FieldConfig && $fieldDescription->isRequired()) {
+      $fieldDescription->setRequired(false)->save();
+    }
+  }
+}
+
+/**
+ * Make URL field optional on thumbnail landscape paragraph type
+ */
+function ncar_ucar_umbrella_update_8107()
+{
+  $fieldLink = FieldConfig::loadByName('paragraph', 'tadl_item', 'field_tadl_item_link');
+  if ($fieldLink instanceof FieldConfig && $fieldLink->isRequired()) {
+    $fieldLink->setRequired(false)->save();
+  }
+}
+
+/**
+ * Update Details Table filter to allow <p> and <a> tags. Add Link and Unlink buttons to the editor
+ */
+function ncar_ucar_umbrella_update_8108()
+{
+  $detailsTable = FilterFormat::load('details_table');
+  $detailsTable->filters('filter_html')->settings['allowed_html'] .= ' <p> <a href>';
+  $detailsTable->save();
+
+  $detailsEditor = Editor::load('details_table');
+  $settings = $detailsEditor->getSettings();
+  $settings['toolbar']['rows'][0][0]['items'][] = 'DrupalLink';
+  $settings['toolbar']['rows'][0][0]['items'][] = 'DrupalUnlink';
+  $detailsEditor->setSettings($settings);
+  $detailsEditor->save();
+}
+
+/**
+ * Add Topics, Tags and Organizations vocabularies and terms
+ */
+function ncar_ucar_umbrella_update_8109()
+{
+  $vocabularies = [
+    'topics' => [
+      'name' => 'Topics',
+      'description' => 'The topics associated with each news story',
+      'terms' => [
+        'Air Quality' => [],
+        'Climate' => [],
+        'Data' => [],
+        'Education & Outreach' => [],
+        'Government Relations' => [],
+        'Organization' => [],
+        'Sun & Space Weather' => [],
+        'Supercomputing' => [],
+        'Water' => [],
+        'Weather' => []
+      ]
+    ],
+    'tags' => [
+      'name' => 'Tags',
+      'description' => 'The tags associated with each news story',
+      'terms' => [
+        'Chemistry' => [],
+        'Diversity' => [],
+        'Ecosystems' => [],
+        'Energy' => [],
+        'Events' => [],
+        'Health' => [],
+        'Ice' => [],
+        'Land' => [],
+        'Modeling' => [],
+        'Observing' => [],
+        'Ocean' => [],
+        'People' => [],
+        'Societal Impacts' => [],
+        'Tech Transfer' => [],
+        'Transportation' => [],
+        'Wildfire' => [],
+        'News Release' => [],
+        'Staff News' => [],
+        'Washington Update' => []
+      ]
+    ],
+    'organizations' => [
+      'name' => 'Organizations',
+      'description' => 'The organization associated with each news story',
+      'terms' => [
+        'NCAR' => [
+          'ACOM',
+          'CGD',
+          'CISL',
+          'EOL',
+          'HAO',
+          'MMM',
+          'RAL'
+        ],
+        'UCAR' => [],
+        'UCAR Community Programs' => [
+          'COMET',
+          'COSMIC',
+          'CPAESS',
+          'GLOBE',
+          'SCIED',
+          'UNIDATA'
+        ]
+      ]
+    ]
+  ];
+
+  foreach ($vocabularies as $vocabulary => $values) {
+    $existingVocabulary = Vocabulary::load($vocabulary);
+
+    if (!$existingVocabulary) {
+      $newVocabulary = Vocabulary::create([
+        'name' => $values['name'],
+        'description' => $values['description'],
+        'vid' => $vocabulary,
+      ]);
+      $newVocabulary->save();
+    }
+
+    foreach ($values['terms'] as $key => $value) {
+      $existingTerm = Term::load($key);
+
+      if (!$existingTerm) {
+        $parentTerm = Term::create([
+          'name' => $key,
+          'vid' => $vocabulary,
+        ]);
+
+        $parentTerm->save();
+
+        if (is_array($value)) {
+          foreach ($value as $child) {
+            $newChild = Term::create([
+              'name' => $child,
+              'vid' => $vocabulary,
+              'parent' => $parentTerm->id()
+            ]);
+
+            $newChild->save();
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Create Topics, Tags and Organizations taxonomy reference fields on Page content type
+ */
+function ncar_ucar_umbrella_update_8110()
+{
+  $entityType = 'node';
+  $bundle = 'page';
+  $fields = [
+    'field_page_topics' => [
+      'label' => 'Topics',
+      'settings' => [
+        'handler_settings' => [
+          'target_bundles' => [
+            'topics' => 'topics'
+          ]
+        ]
+      ]
+    ],
+    'field_page_tags' => [
+      'label' => 'Tags',
+      'settings' => [
+        'handler_settings' => [
+          'target_bundles' => [
+            'tags' => 'tags'
+          ]
+        ]
+      ]
+    ],
+    'field_page_organizations' => [
+      'label' => 'Organizations',
+      'settings' => [
+        'handler_settings' => [
+          'target_bundles' => [
+            'organizations' => 'organizations'
+          ]
+        ]
+      ]
+    ]
+  ];
+
+  $formDisplay = \Drupal::entityTypeManager()
+    ->getStorage('entity_form_display')
+    ->load($entityType . '.' . $bundle . '.' . 'default');
+
+  foreach ($fields as $field => $config) {
+    $fieldStorage = FieldStorageConfig::loadByName($entityType, $field);
+
+    if (!$fieldStorage) {
+      $fieldStorage = FieldStorageConfig::create([
+        'field_name' => $field,
+        'entity_type' => $entityType,
+        'type' => 'entity_reference',
+        'cardinality' => -1,
+        'settings' => ['target_type' => 'taxonomy_term']
+      ]);
+
+      $fieldStorage->save();
+    }
+
+    $fieldConfig = FieldConfig::loadByName($entityType, $bundle, $field);
+
+    if (!$fieldConfig) {
+      $fieldConfig = FieldConfig::create([
+        'field_storage' => $fieldStorage,
+        'bundle' => $bundle,
+        'label' => $config['label'],
+        'field_name' => $field,
+        'entity_type' => $entityType,
+        'settings' => $config['settings']
+      ]);
+
+      $fieldConfig->save();
+    }
+
+    $formDisplay->setComponent($field, array(
+      'type' => 'entity_reference_autocomplete',
+    ))
+      ->save();
+  }
+}
+
+/**
+ * Update 2 admin blocks to be in content, not banner, region
+ */
+function ncar_ucar_umbrella_update_8111() {
+
+  $default_theme = \Drupal::config('system.theme')->get('default');
+
+  $update_blocks =  ['local_actions', 'local_tasks'];
+
+  $new_region = 'content';
+
+  foreach($update_blocks as $block_name) {
+    $koru_block = Block::load($block_name);
+    $theme_block = Block::load($default_theme . '_' . $block_name);
+
+    if($koru_block) {
+      $koru_block->setRegion($new_region);
+      $koru_block->save();
+    }
+    if($theme_block) {
+      $theme_block->setRegion($new_region);
+      $theme_block->save();
+    }
+  }
+}
+
+/**
+ * Add Large News Feed image style
+ */
+function ncar_ucar_umbrella_update_8112() {
+  $style = ImageStyle::create(array('name' => 'large_news_feed', 'label' => 'Large News Feed (775x550)'));
+
+  $configuration = array(
+    'id' => 'image_scale_and_crop',
+    'weight' => 0,
+    'data' => array(
+      'width' => 775,
+      'height' => 550,
+    ),
+  );
+
+  $effect = \Drupal::service('plugin.manager.image.effect')->createInstance($configuration['id'], $configuration);
+  $style->addImageEffect($effect->getConfiguration());
+  $style->save();
+}
+
+/**
+ * Install the simplesamlphp_auth module
+ */
+function ncar_ucar_umbrella_update_8113() {
+
+  $profile_config_dir = drupal_get_path('profile', 'ncar_ucar_umbrella') . '/config/install';
+
+  \Drupal::service('module_installer')->install(['externalauth', 'simplesamlphp_auth']);
+
+  $config_path = $profile_config_dir . '/simplesamlphp_auth.settings.yml';
+  $data = Yaml::parse($config_path);
+  \Drupal::configFactory()
+    ->getEditable('simplesamlphp_auth.settings')
+    ->setData($data)
+    ->save(TRUE);
+}
+
+/**
+ * Create 'Editor' role and set permissions on the role
+ */
+function ncar_ucar_umbrella_update_8114() {
+  $permissions = array(
+    'access administration pages',
+    'access content overview',
+    'access files overview',
+    'access news feeds',
+    'access site in maintenance mode',
+    'access toolbar',
+    'access tour',
+    'administer nodes',
+    'create url aliases',
+    'use text format details_table',
+    'use text format wysiwyg_editor',
+    'view the administration theme',
+  );
+
+  $role = Role::create(['id' => 'editor', 'label' => 'Editor']);
+
+  foreach ($permissions as $permission) {
+    $role->grantPermission($permission);
+  }
+
+  $role->save();
+}
+
+/**
+ * Install the UCAR Alert module and place the block
+ */
+function ncar_ucar_umbrella_update_8115() {
+
+  \Drupal::service('module_installer')->install(['ucar_alert']);
+
+  $default_theme = \Drupal::config('system.theme')->get('default');
+
+  $block_name =  'ucar_alert_block';
+
+  $new_region = 'header';
+
+  $koru_block = Block::load($block_name);
+  $theme_block = Block::load($default_theme . '_' . $block_name);
+
+  if($koru_block) {
+    $koru_block->setRegion($new_region);
+    $koru_block->save();
+  }
+  if($theme_block) {
+    $theme_block->setRegion($new_region);
+    $theme_block->save();
+  }
+
+}

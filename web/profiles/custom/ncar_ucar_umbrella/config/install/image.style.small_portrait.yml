@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+name: small_portrait
+label: 'Small Portrait (295×410)'
+effects:
+  d0581d22-d99c-4dbe-bdd2-982a0f294299:
+    uuid: d0581d22-d99c-4dbe-bdd2-982a0f294299
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 295
+      height: 410

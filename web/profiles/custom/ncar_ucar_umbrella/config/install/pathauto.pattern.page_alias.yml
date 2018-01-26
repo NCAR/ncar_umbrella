@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: page_alias
+label: 'Page Alias'
+type: 'canonical_entities:node'
+pattern: '[node:menu-link:parents:join:/]/[node:menu-link:title]'
+selection_criteria:
+  page:
+    id: node_type
+    bundles:
+      page: page
+    negate: false
+    context_mapping:
+      node: node
+selection_logic: and
+weight: -5
+relationships: {  }

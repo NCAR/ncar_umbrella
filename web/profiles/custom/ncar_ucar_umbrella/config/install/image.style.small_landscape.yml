@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+name: small_landscape
+label: 'Small Landscape (600×360)'
+effects:
+  df645261-3e4a-4579-8461-7921aaba2dd5:
+    uuid: df645261-3e4a-4579-8461-7921aaba2dd5
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 600
+      height: 360

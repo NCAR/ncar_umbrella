@@ -1,0 +1,121 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.page.field_page_banner_image
+    - field.field.node.page.field_page_body
+    - field.field.node.page.field_page_components
+    - field.field.node.page.field_page_organizations
+    - field.field.node.page.field_page_related_links
+    - field.field.node.page.field_page_subtitle
+    - field.field.node.page.field_page_tags
+    - field.field.node.page.field_page_topics
+    - image.style.thumbnail
+    - node.type.page
+  module:
+    - image
+    - paragraphs
+    - path
+    - text
+_core:
+  default_config_hash: YD5PTFb69cPp0xO_NU5V2RQ-fa1T_ByK9np2cjsJKHE
+id: node.page.default
+targetEntityType: node
+bundle: page
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 31
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  field_page_banner_image:
+    weight: 33
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
+  field_page_body:
+    weight: 34
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_page_components:
+    type: entity_reference_paragraphs
+    weight: 35
+    settings:
+      title: Component
+      title_plural: Components
+      edit_mode: closed
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+    third_party_settings: {  }
+    region: content
+  field_page_organizations:
+    type: entity_reference_autocomplete
+    weight: 39
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_page_related_links:
+    type: entity_reference_paragraphs
+    weight: 36
+    settings:
+      title: 'Related Link'
+      title_plural: 'Related Links'
+      edit_mode: closed
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+    third_party_settings: {  }
+    region: content
+  field_page_subtitle:
+    weight: 32
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_page_tags:
+    type: entity_reference_autocomplete
+    weight: 38
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_page_topics:
+    type: entity_reference_autocomplete
+    weight: 37
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  path:
+    type: path
+    weight: 30
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  title:
+    type: string_textfield
+    weight: -5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+hidden:
+  created: true
+  promote: true
+  sticky: true
+  uid: true

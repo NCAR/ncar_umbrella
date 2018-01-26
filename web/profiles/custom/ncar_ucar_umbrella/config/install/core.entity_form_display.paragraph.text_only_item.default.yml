@@ -1,0 +1,48 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.text_only_item.field_text_only_item_description
+    - field.field.paragraph.text_only_item.field_text_only_item_link
+    - field.field.paragraph.text_only_item.field_text_only_item_title
+    - paragraphs.paragraphs_type.text_only_item
+  module:
+    - link
+    - maxlength
+_core:
+  default_config_hash: pCbWtx6uLUT001QCluST6vCdz_IylUnoPMBnuKh37ro
+id: paragraph.text_only_item.default
+targetEntityType: paragraph
+bundle: text_only_item
+mode: default
+content:
+  field_text_only_item_description:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: 190
+        maxlength_js_label: 'Content limited to @limit characters, remaining: <strong>@remaining</strong>'
+        maxlength_js_enforce: true
+        maxlength_js_truncate_html: false
+    type: string_textarea
+  field_text_only_item_link:
+    weight: 2
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  field_text_only_item_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+hidden:
+  created: true
+  status: true
+  uid: true

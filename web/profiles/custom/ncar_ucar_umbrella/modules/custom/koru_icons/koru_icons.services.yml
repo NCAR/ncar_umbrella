@@ -1,0 +1,3 @@
+services:
+  koru_icons.manager:
+    class: Drupal\koru_icons\KoruIconsService

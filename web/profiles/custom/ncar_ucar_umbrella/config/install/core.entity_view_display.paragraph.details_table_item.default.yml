@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.details_table_item.field_details_table_item_descrip
+    - field.field.paragraph.details_table_item.field_details_table_item_details
+    - field.field.paragraph.details_table_item.field_details_table_item_title
+    - paragraphs.paragraphs_type.details_table_item
+id: paragraph.details_table_item.default
+targetEntityType: paragraph
+bundle: details_table_item
+mode: default
+content:
+  field_details_table_item_descrip:
+    type: text_default
+    label: hidden
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_details_table_item_details:
+    type: text_default
+    label: hidden
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_details_table_item_title:
+    type: string
+    label: hidden
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }

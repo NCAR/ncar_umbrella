@@ -1,0 +1,58 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.tadl_item.field_tadl_item_description
+    - field.field.paragraph.tadl_item.field_tadl_item_image
+    - field.field.paragraph.tadl_item.field_tadl_item_link
+    - field.field.paragraph.tadl_item.field_tadl_item_title
+    - image.style.small_landscape
+    - paragraphs.paragraphs_type.tadl_item
+  module:
+    - image
+    - link
+    - maxlength
+_core:
+  default_config_hash: jYIcr9X_gwJC1Z49GDrbIyC-elzSslfYY6b0NIEft9I
+id: paragraph.tadl_item.default
+targetEntityType: paragraph
+bundle: tadl_item
+mode: default
+content:
+  field_tadl_item_description:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings:
+      maxlength:
+        maxlength_js: 280
+        maxlength_js_label: 'Content limited to @limit characters, remaining: <strong>@remaining</strong>'
+        maxlength_js_enforce: true
+        maxlength_js_truncate_html: false
+    type: string_textarea
+  field_tadl_item_image:
+    weight: 3
+    settings:
+      progress_indicator: throbber
+      preview_image_style: small_landscape
+    third_party_settings: {  }
+    type: image_image
+  field_tadl_item_link:
+    weight: 2
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  field_tadl_item_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+hidden:
+  created: true
+  status: true
+  uid: true

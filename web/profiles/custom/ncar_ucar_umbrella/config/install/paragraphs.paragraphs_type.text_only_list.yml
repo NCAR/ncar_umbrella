@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: text_only_list
+label: 'Text Only List'
+behavior_plugins: {  }

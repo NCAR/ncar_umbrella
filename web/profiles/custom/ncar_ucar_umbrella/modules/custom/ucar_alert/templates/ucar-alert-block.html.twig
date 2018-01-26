@@ -1,0 +1,8 @@
+<div class="callout large {{ alert.field_alert_type }}" data-alert data-closable data-changed="{{ alert.changed }}">
+  <div class="alert-box">
+    <button class="close-button" data-close>&times;</button>
+    <i class="fa fa-{{ alert.icon }}"></i>
+    <span>{{ alert.field_alert_body|raw }}</span>
+    <span>&nbsp;<a href="https://www.ucar.edu/emergency">View more information.</a></span>
+  </div>
+</div>

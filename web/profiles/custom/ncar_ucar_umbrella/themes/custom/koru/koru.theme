@@ -1,0 +1,81 @@
+<?php
+
+use Drupal\image\Entity\ImageStyle;
+
+/**
+ * Add attributes to body element depending on content in regions
+ * @param $variables
+ */
+function koru_preprocess_html(&$variables){
+  if(_koru_is_koru_theme()) {
+
+    !isset($variables['attributes']['id']) ? $variables['attributes']['id'] = ['body'] : $variables['attributes']['id'][] = 'body';
+    !isset($variables['attributes']['data-toggler']) ? $variables['attributes']['data-toggler'] = ['nav-open'] : $variables['attributes']['data-toggler'][] = 'nav-open';
+
+    if(_koru_region_exists($variables, 'banner')) {
+      !isset($variables['attributes']['class']) ? $variables['attributes']['class'] = ['with-banner'] : $variables['attributes']['class'][] = 'with-banner';
+    }
+
+    if(_koru_region_exists($variables, 'sidebar')) {
+      !isset($variables['attributes']['class']) ? $variables['attributes']['class'] = ['with-sidebar'] : $variables['attributes']['class'][] = 'with-sidebar';
+    }
+  }
+}
+
+/**
+ * @param $variables
+ */
+function koru_preprocess_page(&$variables) {
+  if(_koru_is_koru_theme()) {
+    $variables['koru_with_sidebar'] = _koru_region_exists($variables, 'sidebar');
+  }
+}
+
+/**
+ * Because of bug in Drupal with dynamically created blocks in regions (like our sidebar menu)
+ * we can only know if the region is populated by actually rendering it
+ *
+ * @param $variables array
+ * @param $region string
+ *
+ * @return bool
+ */
+function _koru_region_exists($variables, $region) {
+  return isset($variables['page'][$region]) && !empty(trim(strip_tags(render($variables['page'][$region]))));
+}
+
+/**
+ * Whether or not current theme is 'koru' or a sub-theme of koru
+ * @return bool
+ */
+function _koru_is_koru_theme() {
+  /** @var \Drupal\Core\Theme\ActiveTheme $theme */
+  $theme = \Drupal::service('theme.manager')->getActiveTheme();
+  if($theme->getName() == 'koru') return true;
+
+  $base = $theme->getBaseThemes();
+  return isset($base['koru']);
+}
+
+/**
+ * Use the custom image styles for portrait/landscape paragraphs/components
+ * There is no way to access these in a twig template directly (other than contrib module)
+ *
+ * @param $variables
+ */
+function koru_preprocess_paragraph(&$variables) {
+
+  if(isset($variables['elements']['field_tadl_item_image']['#items']))
+  {
+    $image_uri = $variables['elements']['field_tadl_item_image']['#items']->first()->entity->getFileUri();
+    $variables['tadl_item_image_style_uri'] = ImageStyle::load('small_landscape')->buildUrl($image_uri);
+  }
+  elseif(isset($variables['elements']['field_tadp_item_image']['#items']))
+  {
+    $image_uri = $variables['elements']['field_tadp_item_image']['#items']->first()->entity->getFileUri();
+    $variables['tadp_item_image_style_uri'] = ImageStyle::load('small_portrait')->buildUrl($image_uri);
+  }
+  elseif(isset($variables['paragraph']->field_details_table_width)) {
+      $variables['details_table_width'] = $variables['paragraph']->field_details_table_width->get(0)->value;
+  }
+}

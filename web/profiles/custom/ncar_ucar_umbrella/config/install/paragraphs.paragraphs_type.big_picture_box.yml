@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: big_picture_box
+label: 'Big Picture Box'
+behavior_plugins: {  }

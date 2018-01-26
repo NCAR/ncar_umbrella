@@ -1,0 +1,94 @@
+/* default to height of first row of admin toolbar */
+body.user-logged-in.toolbar-fixed .sticky.is-stuck {
+  top: 39px !important;
+}
+
+/* plus the height of second row of toolbar if it's open */
+body.user-logged-in.toolbar-horizontal.toolbar-tray-open .sticky.is-stuck {
+  top: 79px !important;
+}
+
+/* classy theme has a ul.menu class which sets a margin (breaks mobile sub-menu style) */
+header ul.menu {
+  margin-left: 0;
+}
+
+/* ucar/ncar link styles don't work well with these */
+#block-koru-local-tasks .tabs a {
+  color: #fff;
+}
+
+/* fix the active tab color of drupal edit menu that foundation borks */
+#block-koru-local-tasks .tabs a.is-active {
+  color: #323133;
+}
+
+.callout i {
+  line-height: 1.5;
+  padding-right: .4rem;
+}
+
+.callout p {
+  display: inline;
+}
+
+.contextual {
+  z-index: 0;
+}
+
+.alert .close-button {
+  background-color: #e80000;
+}
+
+.warning .close-button {
+  background-color: #ffff34;
+}
+
+.primary .close-button {
+  background-color: #d8e8ff;
+}
+
+.nav-open .contextual-region {
+  position: initial;
+}
+
+.views-element-container .pager {
+  margin: 0 auto;
+  max-width: 72.5rem;
+  width: 96%;
+}
+
+.views-element-container .pager__items {
+  text-align: right;
+}
+
+.views-exposed-form label {
+  font-family: 'Poppins Semibold', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  line-height: 1.2;
+  font-size: 1.25rem;
+  color: #142e5d;
+}
+
+.views-exposed-form .form--inline .form-actions {
+  clear: none;
+  float:left;
+  margin: 40px 0 0;
+}
+
+@media only screen and (max-width: 900px) {
+  /* contextual link sits on top of hamburger menu. let's not do that */
+  #block-headerblock div.contextual {
+    display:none;
+  }
+}
+
+@media only screen and (min-width: 900px)  {
+  /* contextual menu figs with the koru menu */
+  .block-local-tasks-block.contextual-region,
+  .block-header-block.contextual-region,
+  .block-banner-block.contextual-region {
+    position: initial;
+  }
+}

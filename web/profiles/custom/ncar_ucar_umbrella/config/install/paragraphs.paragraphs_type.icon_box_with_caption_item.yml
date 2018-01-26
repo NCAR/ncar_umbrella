@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: icon_box_with_caption_item
+label: 'Icon Box with Caption Item'
+behavior_plugins: {  }

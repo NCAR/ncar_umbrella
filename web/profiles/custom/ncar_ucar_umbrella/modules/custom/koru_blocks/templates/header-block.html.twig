@@ -1,0 +1,96 @@
+<div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="mediumLarge">
+  <div class="mobile-logo">
+    <a href="{{ front_page }}" class="table" title="{{ site_name }}">
+      <h1 class="cell acronym">
+    {% block mobile_logo %}
+        <img src="http://placehold.it/216x69?text=NCAR|UCAR" alt="{{ site_name }}"/>
+    {% endblock %}
+        <span class="show-for-sr">{{ site_slogan }}</span>
+      </h1>
+      <h1 class="cell description">{{ site_name }}</h1>
+    </a>
+  </div>
+  <button class="fa fa-bars" type="button" data-toggle="main-menu body menu-button" id="menu-button" data-toggler="fa-minus-circle fa-bars"></button>
+</div>
+
+<div class="top-bar">
+  <div class="top-bar-title logo-wrapper table">
+    <div class="acronym-wrapper cell">
+      {% block desktop_logos %}
+      <h1>
+        <a href="{{ front_page }}" title="NCAR Home">
+          <img src="http://placehold.it/443x117?text=NCAR" alt="NCAR" />
+          <span class="show-for-sr">NCAR</span>
+        </a>
+      </h1>
+      <p>
+        <a href="{{ front_page }}" title="UCAR Home">
+          <img src="http://placehold.it/432x117?text=UCAR" alt="UCAR" />
+          <span class="show-for-sr">UCAR</span>
+        </a>
+      </p>
+      {% endblock %}
+    </div>
+    <div class="acronym-definition cell">
+      <h1>{{ site_name }}</h1>
+    </div>
+
+  </div>
+  <div class="top-bar-menus" id="main-menu">
+    <div class="top-bar-left">
+      <nav class="main-nav">
+        <ul class="menu" data-responsive-menu="accordion mediumLarge-dropdown">
+          {% for item in main_menu_items %}
+            <li {% if item.is_active_section %} class="is-active-section" {% endif %}>
+              <a href="{{ item.url }}">{{ item.title }}</a>
+              {% if item.children %}
+                <ul class="menu">
+                  <li>
+                    <a href="{{ item.url }}">Overview</a>
+                    <p>{{ item.description }}</p>
+                  </li>
+                  {% for child in item.children %}
+                    <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+    <div class="top-bar-right">
+      <div class="utility-wrapper">
+        <div class="utility-menu">
+          <div class="header-default-search">
+            <form class="searchbox" role="search" method="get" action="/">
+              <input type="text" placeholder="Search...." name="s" class="searchbox-input">
+              <button type="submit" class="searchbox-submit" value="GO"><i class="fa fa-search"></i></button>
+              <span class="searchbox-icon"><i class="fa fa-search"></i></span>
+            </form>
+          </div>
+          <div class="utility-menu-primary">
+            <ul>
+              <li><a href="#" target="_blank">Organizational Sitemap</a></li>
+              <li><a href="#" target="_blank">For Staff</a></li>
+              <li {% if alert_exists %} class="highlighted" {% endif %}><a href="#">Alerts</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="utility-mobile-wrapper">
+          <div class="header-default-search-mobile">
+            <form class="searchbox" role="search" method="get" action="#">
+              <input type="text" placeholder="Search...." name="s" class="searchbox-input">
+              <button type="submit" class="searchbox-submit" value="GO"><i class="fa fa-search"></i></button>
+            </form>
+          </div>
+          <ul class="utility-parents">
+            <li><a href="https://ncar.ucar.edu">NCAR Home</a></li>
+            <li><a href="https://www.ucar.edu">UCAR Home</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
